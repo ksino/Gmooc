@@ -31,7 +31,7 @@ SECRET_KEY = 'ms*284!$+zv!al)o*4!7al1vijxl$tqi#21v5)qn0^*@=*x^%x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-# DEBUG = False
+#DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -100,9 +100,9 @@ WSGI_APPLICATION = 'Gmooc.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'maxtest',
-        'USER': 'maxdj',
-        'PASSWORD': 'maxdj',
+        'NAME': 'gmooc',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -167,4 +167,4 @@ EMAIL_FROM = 'cutewxy@163.com'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # 静态文件, debug为false的时候
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
