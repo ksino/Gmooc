@@ -103,7 +103,7 @@ DATABASES = {
         'NAME': 'gmooc',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
+        'HOST': 'ksino.xyz',
         'PORT': '5432',
     }
 }
