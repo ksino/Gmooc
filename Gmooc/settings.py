@@ -100,10 +100,10 @@ WSGI_APPLICATION = 'Gmooc.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'maxtest',
-        'USER': 'maxdj',
-        'PASSWORD': 'maxdj',
-        'HOST': '127.0.0.1',
+        'NAME': 'gmooc',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'ksino.xyz',
         'PORT': '5432',
     }
 }
