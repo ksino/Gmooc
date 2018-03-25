@@ -245,7 +245,7 @@ class TeacherListView(View):
             page = request.GET.get('page', 1)
         except PageNotAnInteger:
             page = 1
-        p = Paginator(all_teachers, 1, request=request)
+        p = Paginator(all_teachers, 3, request=request)
         teachers = p.page(page)
         return render(request, "teachers-list.html", {
             'all_teachers': teachers,
