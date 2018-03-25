@@ -16,8 +16,8 @@ class BaseSettings(object):
 
 
 class GlobalSettings(object):
-    site_title = "花花公子"
-    site_footer = "小情之家"
+    site_title = "Gmooc online"
+    site_footer = " 2018 ksino.xyz  京ICP备 12003892号-11"
     menu_style = "accordion"
 
 
