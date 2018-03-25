@@ -16,22 +16,6 @@ from users.models import UserProfile
 from utils.importdata import importdatabase
 
 
-class importrecord(View):
-    # insert record to database from txt
-    def get(self, request):
-        data = importdatabase('D:/Catalog/Django/maxone/apps/utils/sex_real.txt')
-        i = 0
-
-        for dictdata in data:
-            video = Video(lesson_id=7, name = dictdata['title'],url = dictdata['mp4'])
-            video.save()
-            i = i + 1
-        return render(request, "org_list.html",
-                           {
-                           }
-               )
-
-
 class OrgView(View):
     """
     课程机构功能
@@ -50,9 +34,10 @@ class OrgView(View):
             all_orgs = all_orgs.filter(city_id=int(city_id))
 
         # seacrch key word
-        search_keyword = request.GET.get('keywords',"")
+        search_keyword = request.GET.get('keywords', "")
         if search_keyword:
-            all_orgs = all_orgs.filter(Q(name__icontains=search_keyword)|Q(desc__icontains=search_keyword))
+            all_orgs = all_orgs.filter(
+                Q(name__icontains=search_keyword) | Q(desc__icontains=search_keyword))
 
         # 类别筛选
         category = request.GET.get('ct', "")
@@ -76,23 +61,24 @@ class OrgView(View):
         p = Paginator(all_orgs, 4, request=request)
         orgs = p.page(page)
         return render(request, "org_list.html",
-                    {
-                        "all_orgs": orgs,
-                        "all_citys": all_citys,
-                        "org_nums": org_nums,
-                        'orgs': orgs,
-                        "city_id": city_id,
-                        "category": category,
-                        "hot_orgs": hot_orgs,
-                        "sort": sort,
-                    }
-        )
+                      {
+                          "all_orgs": orgs,
+                          "all_citys": all_citys,
+                          "org_nums": org_nums,
+                          'orgs': orgs,
+                          "city_id": city_id,
+                          "category": category,
+                          "hot_orgs": hot_orgs,
+                          "sort": sort,
+                      }
+                      )
 
 
 class AddUserAskView(View):
     """
     用户添加咨询
     """
+
     def post(self, request):
         userask_form = UserAskForm(request.POST)
         if userask_form.is_valid():
@@ -102,14 +88,12 @@ class AddUserAskView(View):
             return HttpResponse('{"status": "fail", "msg": "用户添加出错"}', content_type="application/json")
 
 
-
-
-
 class OrgHomeView(View):
     """
     机构首页
 
     """
+
     def get(self, request, org_id):
         current_page = 'home'
         course_org = CourseOrg.objects.get(id=int(org_id))
@@ -130,13 +114,14 @@ class OrgHomeView(View):
             'course_org': course_org,
             'current_page': current_page,
             'has_fav': has_fav
-            })
+        })
 
 
 class OrgCourseView(View):
     """
     机构课程列表页
     """
+
     def get(self, request, org_id):
         current_page = 'course'
         course_org = CourseOrg.objects.get(id=int(org_id))
@@ -145,21 +130,21 @@ class OrgCourseView(View):
             'all_courses': all_courses,
             'course_org': course_org,
             'current_page': current_page,
-            })
-
+        })
 
 
 class OrgDescView(View):
     """
     机构课程列表页
     """
+
     def get(self, request, org_id):
         current_page = 'desc'
         course_org = CourseOrg.objects.get(id=int(org_id))
         return render(request, 'org-detail-desc.html', {
             'course_org': course_org,
             'current_page': current_page,
-            })
+        })
 
 
 class OrgTeacherView(View):
@@ -175,18 +160,20 @@ class OrgTeacherView(View):
             'all_teachers': all_teachers,
             'course_org': course_org,
             'current_page': current_page
-            })
+        })
 
 
 class AddFavView(View):
     """用户收藏"""
+
     def post(self, request):
         fav_id = request.POST.get('fav_id', 0)
         fav_type = request.POST.get('fav_type', 0)
 
         if not request.user.is_authenticated():
             return HttpResponse('{"status": "fail", "msg": "用户未登录"}', content_type="application/json")
-        exist_records = UserFavorite.objects.filter(user=request.user, fav_id=int(fav_id), fav_type=int(fav_type))
+        exist_records = UserFavorite.objects.filter(
+            user=request.user, fav_id=int(fav_id), fav_type=int(fav_type))
         if exist_records:
             # 记录存在,取消收藏,收藏数减1
             exist_records.delete()
@@ -207,7 +194,7 @@ class AddFavView(View):
             return HttpResponse('{"status": "success", "msg": "收藏"}', content_type="application/json")
         else:
             user_fav = UserFavorite()
-            if int(fav_id) > 0 and int(fav_type) > 0 :
+            if int(fav_id) > 0 and int(fav_type) > 0:
                 user_fav.user = request.user
                 user_fav.fav_id = int(fav_id)
                 user_fav.fav_type = int(fav_type)
@@ -226,7 +213,6 @@ class AddFavView(View):
                     teacher.fav_nums += 1
                     teacher.save()
 
-
                 return HttpResponse('{"status": "success", "msg": "已收藏"}', content_type="application/json")
             else:
                 return HttpResponse('{"status": "fail", "msg": "收藏出错"}', content_type="application/json")
@@ -235,13 +221,15 @@ class AddFavView(View):
 class TeacherListView(View):
     """set teacher
     """
+
     def get(self, request):
         all_teachers = Teacher.objects.all()
 
         # seacrch key word
-        search_keyword = request.GET.get('keywords',"")
+        search_keyword = request.GET.get('keywords', "")
         if search_keyword:
-            all_teachers = all_teachers.filter(Q(name__icontains=search_keyword))
+            all_teachers = all_teachers.filter(
+                Q(name__icontains=search_keyword))
 
         # 类别筛选
 
@@ -264,10 +252,11 @@ class TeacherListView(View):
             'sort': sort,
             'sorted_teachers': sorted_teachers,
 
-            })
+        })
 
 
 class TeacherDetailView(View):
+
     def get(self, request, teacher_id):
         teacher = Teacher.objects.get(id=int(teacher_id))
         teacher.click_nums += 1
@@ -295,8 +284,4 @@ class TeacherDetailView(View):
             'has_teacher_fav': has_teacher_fav,
             'has_org_fav': has_org_fav,
 
-            })
-
-
-
-
+        })
